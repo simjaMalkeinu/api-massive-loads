@@ -12,12 +12,32 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
+        $messages = [
+            "name.required" => "El nombre es obligatorio.",
+            "email.required" => "El correo electrónico es obligatorio.",
+            "email.email" => "El correo electrónico debe ser una dirección válida.",
+            "email.unique" => "El correo electrónico ya está registrado.",
+            "password.required" => "La contraseña es obligatoria.",
+            "password.min" => "La contraseña debe tener al menos 8 caracteres.",
+            "password.regex" => "La contraseña debe incluir al menos una letra mayúscula, una minúscula, un número y un carácter especial.",
+            "confirm_password.required" => "Debe confirmar la contraseña.",
+            "confirm_password.same" => "Las contraseñas no coinciden."
+        ];
+
         $validator = Validator::make($request->all(), [
-            "name" => "required",
-            "email" => "required|email",
-            "password" => "required",
+            "name" => "required|string|max:255", // Asegura que sea texto y no exceda 255 caracteres
+            "email" => "required|email|max:255|unique:users,email", // Correo único en la tabla users
+            "password" => [
+                "required",
+                "string",
+                "min:8", // Longitud mínima de 8 caracteres
+                "regex:/[a-z]/", // Debe contener al menos una letra minúscula
+                "regex:/[A-Z]/", // Debe contener al menos una letra mayúscula
+                "regex:/[0-9]/", // Debe contener al menos un número
+                "regex:/[@$!%*?&]/", // Debe contener al menos un carácter especial
+            ],
             "confirm_password" => "required|same:password"
-        ]);
+        ], $messages);
 
         if ($validator->fails()) {
             return response()->json([
