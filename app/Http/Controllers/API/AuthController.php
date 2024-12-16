@@ -53,11 +53,12 @@ class AuthController extends Controller
             "password" => bcrypt($request->password)
         ]);
 
-        $token = $user->createToken("TokenApp")->accessToken;
+        // $token = $user->createToken("TokenApp")->accessToken;
         $data = [];
 
-        $data['token'] = $token;
-        $data['user'] = $user;
+        // $data['token'] = $token;
+        $data['username'] = $user->name;
+        $data['email'] = $user->email;
 
 
 
