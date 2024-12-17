@@ -1,67 +1,175 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Proyecto API Massive Loads - Laravel 11
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este proyecto es una API construida con [Laravel 11](https://laravel.com/) y tiene como objetivo gestionar cargas masivas de datos.
 
-## About Laravel
+## Requisitos Previos
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Antes de comenzar, asegúrate de tener instalados los siguientes programas:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- [PHP](https://www.php.net/) (versión 8.2 o superior).
+- [Composer](https://getcomposer.org/) (gestor de dependencias para PHP).
+- [MySQL](https://www.mysql.com/) u otro gestor de base de datos compatible.
+- [Node.js](https://nodejs.org/) (opcional, para el frontend o manejo de assets).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Puedes verificar si tienes instalados PHP y Composer ejecutando los siguientes comandos:
 
-## Learning Laravel
+```bash
+php -v
+composer -v
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Instalación
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Sigue estos pasos para configurar el proyecto en tu máquina local:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+1. Clona el repositorio:
 
-## Laravel Sponsors
+   ```bash
+   git clone <URL_DEL_REPOSITORIO>
+   ```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+2. Accede al directorio del proyecto:
 
-### Premium Partners
+   ```bash
+   cd api-massive-loads
+   ```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+3. Instala las dependencias de Laravel usando Composer:
 
-## Contributing
+   ```bash
+   composer install
+   ```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+4. Copia el archivo de configuración por defecto `.env`:
 
-## Code of Conduct
+   ```bash
+   cp .env.example .env
+   ```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+5. Configura la conexión a la base de datos en el archivo `.env`:
 
-## Security Vulnerabilities
+   ```dotenv
+   DB_CONNECTION=mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   DB_DATABASE=nombre_de_tu_base
+   DB_USERNAME=usuario
+   DB_PASSWORD=contraseña
+   ```
+5. Habilita la carga de archivos en MySQL. Asegúrate de que el parámetro local_infile esté activado en la configuración de MySQL:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+    * En el archivo my.cnf de MySQL (ubicado generalmente en /etc/mysql/my.cnf o /etc/my.cnf), añade o asegúrate de que esté presente la siguiente línea:
 
-## License
+        ```ini
+        [mysqld]
+        local_infile=1
+        ```
+    * También configura la ruta de subida de archivos en mysql, por ejemplo:
+        ```ini
+        [mysqld]
+        secure-file-priv=""
+        ```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# api-massive-loads
+6. Genera la clave de la aplicación:
+
+   ```bash
+   php artisan key:generate
+   ```
+
+7. Ejecuta las migraciones para crear las tablas en la base de datos:
+
+   ```bash
+   php artisan migrate
+   ```
+
+8. Ejecuta los Seeders para crear los roles y el usuario administrador:
+
+   ```bash
+   php artisan db:seed
+   ```
+
+9. Crea la clave para la los clientes, esto es para que puedan hacer peticiones
+    ```bash
+    php artisan passport:client --personal
+    ```
+
+## Servidor de Desarrollo
+
+Inicia el servidor de desarrollo de Laravel ejecutando:
+
+```bash
+php artisan serve
+```
+
+Por defecto, la aplicación estará disponible en [http://localhost:8000](http://localhost:8000).
+
+## Ejecución de Tests
+
+Si quieres ejecutar las pruebas del proyecto, utiliza el siguiente comando:
+
+```bash
+php artisan test
+```
+
+## Compilación de Assets (opcional)
+
+Si tu proyecto incluye assets frontend (CSS, JS), asegúrate de tener instaladas las dependencias de Node.js:
+
+1. Instala las dependencias con npm o yarn:
+
+   ```bash
+   npm install
+   # o
+   yarn install
+   ```
+
+2. Compila los assets:
+
+   ```bash
+   npm run dev
+   # o
+   yarn dev
+   ```
+
+3. Para assets optimizados en producción:
+
+   ```bash
+   npm run build
+   # o
+   yarn build
+   ```
+
+## Estructura del Proyecto
+
+```
+api-massive-loads
+├── app             # Código fuente principal (modelos, controladores, etc.)
+├── bootstrap       # Archivos de arranque
+├── config          # Configuración de la aplicación
+├── database        # Migraciones y seeders
+├── public          # Punto de entrada público
+├── resources       # Vistas, assets (CSS, JS)
+├── routes          # Archivos de rutas (API, Web)
+├── storage         # Archivos y logs generados
+├── tests           # Pruebas unitarias y funcionales
+├── .env            # Configuración del entorno
+├── artisan         # CLI de Laravel
+├── composer.json   # Dependencias de PHP
+└── package.json    # Dependencias frontend (opcional)
+```
+
+## Scripts de Artisan útiles
+
+- `php artisan serve`: Inicia el servidor de desarrollo.
+- `php artisan migrate`: Ejecuta las migraciones.
+- `php artisan db:seed`: Rellena la base de datos con datos iniciales.
+- `php artisan test`: Ejecuta las pruebas.
+- `php artisan route:list`: Muestra todas las rutas registradas.
+
+## Contribución
+
+Si deseas contribuir a este proyecto, por favor realiza un fork del repositorio y envía un pull request con tus cambios.
+
+## Licencia
+
+Este proyecto está bajo la licencia [MIT](./LICENSE).
