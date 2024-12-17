@@ -17,7 +17,7 @@ return new class extends Migration
             SELECT 
                 p.*, 
                 JSON_ARRAYAGG(t.numero_telefono) AS telefonos,
-                JSON_ARRAYAGG(CONCAT(d.calle, ' ', d.numero_exterior, ' ', IFNULL(d.numero_interior, ''), ' ', d.codigo_postal)) AS direcciones
+                JSON_ARRAYAGG(CONCAT(d.calle, ' ', d.numero_exterior, ' ', IFNULL(d.numero_interior, ''), ' ', d.colonia, ' ', d.cp)) AS direcciones
             FROM personas p
             LEFT JOIN telefonos t ON p.id = t.persona_id
             LEFT JOIN direcciones d ON p.id = d.persona_id

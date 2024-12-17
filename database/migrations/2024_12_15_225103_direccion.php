@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('calle');
             $table->string('numero_exterior');
             $table->string('numero_interior');
-            $table->string('codigo_postal');
+            $table->string('colonia');
+            $table->string('cp');
             $table->timestamps();
         });
     }

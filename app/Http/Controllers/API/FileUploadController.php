@@ -109,7 +109,9 @@ class FileUploadController extends Controller
                 FIELDS TERMINATED BY ',' 
                 ENCLOSED BY '\"' 
                 LINES TERMINATED BY '\n' 
-                IGNORE 1 LINES;
+                IGNORE 1 LINES
+                (nombre, paterno, materno, telefono, calle, numero_exterior, numero_interior, colonia, cp);
+
             ");
             return response()->json(['status' => 200, 'message' => 'Archivo CSV cargado exitosamente']);
         } catch (\Exception $e) {

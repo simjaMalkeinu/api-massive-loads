@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Enums\Roles;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -53,6 +54,8 @@ class AuthController extends Controller
             "password" => bcrypt($request->password)
         ]);
 
+        $user->assignRole(Roles::USER->value);
+
         // $token = $user->createToken("TokenApp")->accessToken;
         $data = [];
 
@@ -72,12 +75,16 @@ class AuthController extends Controller
     {
         if (Auth::attempt(["email" => $request->email, "password" => $request->password])) {
             $user = Auth::user();
+
+            $roles = $user->getRoleNames(); // Returns a collection
+
             $token = $user->createToken("TokenApp")->accessToken;
             $data = [];
 
             $data['token'] = $token;
             $data['username'] = $user->name;
             $data['email'] = $user->email;
+            $data['roles'] = $roles;
 
             return response()->json([
                 "status" => 200,
@@ -86,8 +93,8 @@ class AuthController extends Controller
         }
 
         return response()->json([
-            "status" => 0,
-            "message" => "User unauthentication",
+            "status" => 400 ,
+            "message" => "Usuario o contraseña incorrectas",
             "response" => null
         ]);
     }
