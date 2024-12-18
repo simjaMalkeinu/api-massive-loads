@@ -38,16 +38,22 @@ class FileUploadController extends Controller
                 LINES TERMINATED BY '\n' 
                 IGNORE 1 LINES
                 (nombre, paterno, materno, telefono, calle, numero_exterior, numero_interior, colonia, cp);
-
             ");
-            return response()->json(['status' => 200, 'message' => 'Archivo CSV cargado exitosamente']);
         } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
+            return response()->json(['error' => $e->getMessage(), 'status' => 500, 'message' => 'Ocurrio un error al guardar el archivo en el servidor'], 500);
         } finally {
             // Eliminar el archivo temporal después de procesarlo
             if (file_exists($tempFilePath)) {
                 unlink($tempFilePath);
             }
+        }
+
+        try {
+            DB::connection()->getPdo()->exec(("CALL MigrarDatosPersonas();"));
+
+            return response()->json(['status' => 200, 'message' => 'Archivo CSV cargado exitosamente']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage(), 'status' => 200, 'message' => 'Error al migrar la informacion'], 500);
         }
     }
 }
