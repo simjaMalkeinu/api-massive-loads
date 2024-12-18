@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Auth;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -78,10 +78,11 @@ class AuthController extends Controller
 
             $roles = $user->getRoleNames(); // Returns a collection
 
-            $token = $user->createToken("TokenApp")->accessToken;
+            $tokenResult = $user->createToken('Personal Access Token');
+
             $data = [];
 
-            $data['token'] = $token;
+            $data['token'] = $tokenResult->accessToken;
             $data['username'] = $user->name;
             $data['email'] = $user->email;
             $data['roles'] = $roles;
@@ -93,7 +94,7 @@ class AuthController extends Controller
         }
 
         return response()->json([
-            "status" => 400 ,
+            "status" => 400,
             "message" => "Usuario o contraseña incorrectas",
             "response" => null
         ]);
