@@ -18,6 +18,19 @@ php -v
 composer -v
 ```
 
+## Consideraciones
+
+En este proyecto se usa Laravel-Passport por lo que se require  que las siguientes extensiones de PHP estén habilitadas:
+
+**OpenSSL**
+   - Necesario para el manejo de claves públicas y privadas en la autenticación OAuth2.
+   - Habilita la siguiente línea en tu archivo `php.ini`:
+
+     ```ini
+     extension=openssl
+     ```
+   * **Reinicia tu servidor web** para aplicar los cambios en el archivo `php.ini`.
+
 ## Instalación
 
 Sigue estos pasos para configurar el proyecto en tu máquina local:
@@ -25,7 +38,7 @@ Sigue estos pasos para configurar el proyecto en tu máquina local:
 1. Clona el repositorio:
 
    ```bash
-   git clone <URL_DEL_REPOSITORIO>
+   git clone "https://github.com/simjaMalkeinu/api-massive-loads.git"
    ```
 
 2. Accede al directorio del proyecto:
@@ -56,9 +69,23 @@ Sigue estos pasos para configurar el proyecto en tu máquina local:
    DB_USERNAME=usuario
    DB_PASSWORD=contraseña
    ```
+
 5. Habilita la carga de archivos en MySQL. Asegúrate de que el parámetro local_infile esté activado en la configuración de MySQL:
 
-    * En el archivo my.cnf de MySQL (ubicado generalmente en /etc/mysql/my.cnf o /etc/my.cnf), añade o asegúrate de que esté presente la siguiente línea:
+    * En el archivo `my.cnf` o `my.ini` de MySQL 
+
+    * Para entrar a este archivo desde windows puedes precionar las teclas `win + R` y teclear lo siguiente
+
+      ```bash
+      %PROGRAMDATA%
+      ```
+    * Esto te abrira una carpeta deberas ingresar a la siguiente ruta
+
+      ```
+         mysql/MYSQL SERVER 8.*.*/my.ini o my.cnf
+      ```
+
+    * Dentro de este archivo deberas cambiar lo siguiente
 
         ```ini
         [mysqld]
