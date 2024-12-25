@@ -17,6 +17,7 @@ Route::post('login', [AuthController::class, "login"]);
 
 Route::middleware("auth:api")->group(function () {
     Route::get('/personas', [DataController::class, 'getPersonas']);
+    Route::get('/persona/{id}', [DataController::class, 'getPersonaById']);
 
     Route::post('/Upload-data', [FileUploadController::class,'upload']);
 });
